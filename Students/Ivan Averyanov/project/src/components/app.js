@@ -16,7 +16,6 @@ shopCardButton1.addEventListener("click", function (event){
 /**
  * Функция создает  корзину.
  */
-function app(){
 
 	let basketBtns = document.querySelectorAll('.AddToCart');
 
@@ -127,6 +126,7 @@ let basket = {
   }
  	 
 	};  
-};
 
-export default app;
+export default ()=>{
+	basket();
+};
