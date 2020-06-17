@@ -15,13 +15,18 @@
             constructor(name, age) {
                 this.humanName = name;
                 this.humanAge = age;
+                this.money = 0;
             }
             greet(pers = 'you') {
                 console.log(this.humanName + ` greets ${pers}!`)
             }
 
             goWork() {
-                console.log(this.humanName + ' goes to work.')
+                let incomeMale = 150;
+                this.money = incomeMale * 8;
+                return this.money;
+                
+               // console.log(this.humanName + ' goes to work.')
             }
         }
 
@@ -39,9 +44,8 @@
         }
 
         class Female extends Human {
-            constructor(name, age) {
-                super(name, age);
-                this.money = 100;
+            constructor(name, age, money) {
+                super(name, age, money);
             }
 
             goShopping() {
@@ -54,7 +58,6 @@
 
         let oleg = new Male('Oleg', 28);
         let olga = new Female('Olga', 25);
-        
         //1) сделать так, чтобы метод goWork приносил человеку доход, определяемый его "особым" ежечасным доходом * на раб время за 1 рабочий "день"
         //2) дать возможность персонажам "связываться узами"
         //3) запрещать делать покупки при отр. балансе
