@@ -112,7 +112,9 @@ let catalog = {
         document.querySelector(this.container).innerHTML = htmlStr;      
     }
 }
+export default () => {
+    basket.init();
+    catalog.init();
+}
 
 
-basket.init();
-catalog.init();
