@@ -1,135 +1,145 @@
-let names = ['BLONDE', 'MAN', 'SHATEN', 'PEROXIDE', 'PIMP'];
-let prices = [100, 120, 130, 50, 150];
-let ids = [1, 2, 3, 4, 5];
-let imgs = ['https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-2.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-3.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-4.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-5.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-11.png' ];
-let imgSmall = ['https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-2small.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-3small.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-4small.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-5small.png', 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master/public/img/product-11small.png']
+ class List {
+     constructor(url, container, basket) {
+         this.url = 'https://raw.githubusercontent.com/Sergey-TR/testrepo/master' + url;
+         this.container = container;
+         this.items = [];
+         this._init(basket);
+     }
 
-let createItem = index => ({
-    product_name: names[index],
-    price: prices[index],
-    id_product: ids[index],
-    img: imgs[index],
-    img_sm: imgSmall[index]
-});
+     _init(basket = false) {
+         this._get(this.url)
+             .then(data => {
+                 this.items = !basket ? data : data.contents;
+                 // this.items = data.length ? data : data.contents;
+                 //catalog => [...], basket => {... contents: [...]}
+                 this._render();
+                 this._handleEvents();
+                 console.log(this.constructor.name, this)
+         })
+     }
 
-let fillCatalog = () => {
+     _get(url) {
+         return fetch(url).then(data => data.json());     }
 
-    return ids.map((el, index) => createItem(index))
-};
+     _render() {
+         let htmlStr = '';
+         this.items.forEach (item => {
+             htmlStr += new connect[this.constructor.name](item).render();
+         })
+         document.querySelector(this.container).innerHTML = htmlStr;      
+     }
 
+     _handleEvents() { 
+         return ''
+     }
+ }
 
-class Basket {
-    constructor() {
-        this.items = [];
-        this.show = false;
-        this.container = '.basket-items';
-        this._init();
+ class Item {
+     constructor(item) {
+         this.item = item;     }
 
-    }
+     render() {
+         return `<div class="catalog-item">
+                     <img src="${this.item.img}" alt="${this.item.product_name}">
+                     <div class="desc">
+                         <h3>${this.item.product_name}</h3>
+                         <p>${this.item.price} $ per hour</p>
+                         <button 
+                             class="buy-btn" 
+                             name="buy"
+                             data-name="${this.item.product_name}"
+                             data-price="${this.item.price}"
+                             data-id="${this.item.id_product}"
+                             data-img_sm="${this.item.img_sm}"
+                         >TAKE</button>
+                     </div>
+                 </div>`
+     }
+ }
+ class Catalog extends List {
+     constructor(basket, url = '/dataCatalog.json', container = '.catalog-items') {
+         super(url, container);         this.basket = basket;
+     }
+     _handleEvents() {
+         document.querySelector(this.container).addEventListener('click', evt => {
+             if (evt.target.name == 'buy') {
+                 this.basket.add(evt.target.dataset);
+             }
+         });
+     }
+ }
 
-    _init() {
-        this._render(),
-            this._eventHandler();
-    }
+ class Basket extends List {
+     constructor(url = '/getBasket.json', container = '.basket-items', basket = true) {
+         super(url, container, basket);
+     }
+     _handleEvents() {
+         document.querySelector(this.container).addEventListener('click', evt => {
+             if (evt.target.name == 'remove') {
+                 this.remove(evt.target.dataset.id);
+             }
+         });
 
-    _eventHandler() {
-        document.querySelector(this.container).addEventListener('click', (e) => {
-            if (e.target.name == 'remove') {
-                this.remove(e.target.dataset); //todo
-            }
-        });
+         document.querySelector('.btn-basket').addEventListener('click', evt => {
+             document.querySelector('.basket-block').classList.toggle('invisible');
+         });
+     }
 
-        document.querySelector('.btn-basket').addEventListener('click', () => {
-            this.show = !this.show;
-            document.querySelector('.basket-block').classList.toggle('invisible');
-        })
-    }
-    _render() {
-        let htmlStr = '';
-        this.items.forEach(item => {
-            htmlStr += `<div class="basket-item">
-                            <img src="${item.img_sm}" alt="${item.product_name}">
-                            <div class="product-desc">
-                                <p class="product-title">${item.product_name}</p>
-                                <p class="product-amount">${item.amount}</p>
-                                <p class="product-single-price">${item.price}</p>
-                            </div>
-                            <div class="right-block">
-                                <p class="product-price">${item.price * item.amount}</p>
-                                <button class="del-btn" name="remove" data-id="${item.id_product}">&times;</button>
-                            </div>
-                        </div>`
-        });
-        document.querySelector(this.container).innerHTML = htmlStr;
-    }
-    add(item) {
-        let find = this.items.find(el => el.id_product == item.id);
-
-        if (!find) {
-            this.items.push(Object.assign({}, createItem(+item.id - 1), {
-                amount: 1
-            }));
+     add(item) {
+         let find = this.items.find(el => el.id_product == item.id);
+         if (find) {
+            find.quantity++;
+             this._render();
         } else {
-            find.amount++;
-        }
-        this._render();
+             let itemNew = { img_sm: item.img_sm, id_product: item.id, product_name: item.name, price: +item.price, quantity: 1 };
+             this.items.push(itemNew);
+             this._render();
+         }
     }
-    remove(item) {
-        let find = this.items.find(el => el.id_product == item.id);
 
-        if (find.amount == 1) {
+     remove(itemId) {
+         let find = this.items.find(el => el.id_product == itemId);
+         if (find.quantity == 1) {
             this.items.splice(this.items.indexOf(find), 1);
         } else {
-            find.amount--;
+            find.quantity--;
         }
         this._render();
-    }
-}
+         //console.log('попытка удалить ' + itemId)
+     }
+ }
 
-class Catalog {
-    constructor(basket) {
-        this.items = [];
-        this.container = '.catalog-items'
-        this._init();
-        this.basket = basket;
-    }
+ class CatalogItem extends Item {}
 
-    _init() {
-        this.items = fillCatalog();
-        this._render();
-        this._eventHandler();
-    }
+ class BasketItem extends Item {
+     constructor(item) {
+         super(item)
+     }
 
-    _eventHandler() {
-            document.querySelector(this.container).addEventListener('click', (e) => {
-                if (e.target.name == 'buy') {
-                    this.basket.add(e.target.dataset);
-                }
-            });
-        }
+     render() {
+         return `<div class="basket-item">
+                     <img src="${this.item.img_sm}" alt="${this.item.product_name}">
+                     <div class="product-desc">
+                         <p class="product-title">${this.item.product_name}</p>
+                         <p class="product-amount">${this.item.quantity}</p>
+                         <p class="product-single-price">${this.item.price}</p>
+                     </div>
+                     <div class="right-block">
+                         <p class="product-price">${this.item.price * this.item.quantity}</p>
+                         <button class="del-btn" name="remove" data-id="${this.item.id_product}">&times;</button>
+                     </div>
+                 </div>`
+     }
+ }
 
-        _render() {
-            let htmlStr = '';
-            this.items.forEach(item => {
-                htmlStr += `<div class="catalog-item">
-                        <img src="${item.img}" alt="${item.product_name}">
-                        <div class="desc">
-                            <h3>${item.product_name}</h3>
-                            <p>${item.price} $ per hour</p>
-                            <button 
-                                class="buy-btn" 
-                                name="buy"
-                                data-id="${item.id_product}"
-                            >Buy</button>
-                        </div>
-                    </div>`
-            })
-            document.querySelector(this.container).innerHTML = htmlStr;
-        }
-}
 
-export default () => {
-    let basket = new Basket();
-    let catalog = new Catalog(basket);
-}
+ let connect = {
+     'Catalog': CatalogItem,
+     'Basket': BasketItem
+ }
+
+ export default () => {
+     let basket = new Basket();
+     let catalog = new Catalog(basket);
+ } 
 
