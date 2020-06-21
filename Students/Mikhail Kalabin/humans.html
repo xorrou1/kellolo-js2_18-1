@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div id="app">
 
     </div>
 
     <script>
+        'use strict';
         class Human {
-            constructor(name, age) {
+            money = 1000;
+            marriedTo = {};
+            childs = [];
+            constructor(name, age, salary) {
                 this.humanName = name;
                 this.humanAge = age;
+                this.salary = salary;
             }
             greet(pers = 'you') {
                 console.log(this.humanName + ` greets ${pers}!`)
@@ -22,12 +29,27 @@
 
             goWork() {
                 console.log(this.humanName + ' goes to work.')
+                this.money = this.money + this.salary * 8;
+                console.log(this.humanName + ` recieves ${this.salary * 8}$`);
+            }
+
+            getMarriedTo(human) {
+                //Убрать данные у прошлого супруга. (Развод)
+                this.marriedTo.marriedTo = {};
+
+                this.marriedTo = human;
+                human.marriedTo = this;
+            }
+
+            haveChild(secondParent, childName, childGender){
+                this.childs.push({name: childName, gender: childGender});
+                secondParent.childs.push({name: childName, gender: childGender});
             }
         }
 
         class Male extends Human {
-            constructor(name, age) {
-                super(name, age);
+            constructor(name, age, salary) {
+                super(name, age, salary);
                 this.fishes = 0;
             }
             goFishing() {
@@ -39,29 +61,37 @@
         }
 
         class Female extends Human {
-            constructor(name, age) {
-                super(name, age);
-                this.money = 100;
+            constructor(name, age, salary) {
+                super(name, age, salary);
             }
 
             goShopping() {
+                if (this.money < 0) {
+                    console.log("Опаньки! Похоже, что Олежа Тиньков за Вас уже забашлял. Вы у него в долгу!");
+                    console.log(`Balance: ${this.money}$`);
+                    return;
+                }
+
                 console.log(this.humanName + ' goes shopping.');
                 let money = Math.round(Math.random() * 1000);
                 console.log(this.humanName + ` spends ${money}$`);
                 this.money -= money;
+
             }
         }
 
-        let oleg = new Male('Oleg', 28);
-        let olga = new Female('Olga', 25);
-        
+
+
+        let oleg = new Male('Oleg', 28, 55);
+        let olga = new Female('Olga', 25, 35);
+        let ann = new Female('Ann', 26, 40);
         //1) сделать так, чтобы метод goWork приносил человеку доход, определяемый его "особым" ежечасным доходом * на раб время за 1 рабочий "день"
         //2) дать возможность персонажам "связываться узами"
         //3) запрещать делать покупки при отр. балансе
         //4) разрешать персонажам заводить новых персонажей
         //*** если сделать хтмл
 
-//oop
+        //oop
         // let arr = [];
         // let arr2 = new Array();
 
@@ -70,7 +100,7 @@
         // в ДжаваСкрипт все МОЖЕТ БЫТЬ представлено в виде объектов
         // new Array('1', '2', '3') // ['1', '2', '3']
 
-
     </script>
 </body>
+
 </html>
