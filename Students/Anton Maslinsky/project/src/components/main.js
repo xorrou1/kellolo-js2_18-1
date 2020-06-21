@@ -10,6 +10,8 @@ class List {
         this._get(this.url)
             .then(data => {
                 this.items = !basket ? data : data.contents;
+                // this.items = data.length ? data : data.contents;
+                //catalog => [...], basket => {... contents: [...]}
                 this._render();
                 this._handleEvents();
                 console.log(this.constructor.name, this)
@@ -31,9 +33,7 @@ class List {
     _handleEvents() { 
         return ''
     }
-
 }
-
 
 class Item {
     constructor(item) {
@@ -103,6 +103,14 @@ class Basket extends List {
     remove(itemId) {
         let find = this.items.find(el => el.id_product == itemId);
         console.log('попытка удалить ' + itemId)
+        console.log(find)
+
+        if (find.quantity == 1) {
+            this.items.splice(this.items.indexOf(find), 1);
+        } else {
+            find.quantity--;
+        }
+        this._render();
     }
 }
 
