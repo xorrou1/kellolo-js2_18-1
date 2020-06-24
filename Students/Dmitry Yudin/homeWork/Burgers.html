@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Dmitry Yudin">
+	<title>HW_JS2.2.Yudin</title>
+	<style>
+		body { 
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: rgb(55, 47, 38);
+            color: rgb(213, 213, 213);
+            padding: 5%;
+            /* text-align: center; */
+		}
+
+        a.link-btn {
+            color: #fff;
+            background: #1f2224;
+            display:inline-block;
+            border: 1px solid #5d6267;        
+            font: bold 14px Arial, sans-serif;
+            text-decoration: none;
+            border-radius: 2px;
+            padding: 6px 20px;
+            border-radius: 10px;
+        }
+        a.link-btn:hover {
+            background-color: #c76a37;
+            border-color: #091117;
+		}
+
+        fieldset{
+            width: 500px;
+        }
+
+        button {
+            width: 200px;
+            margin-top: 30px; 
+            color: #fff;
+            background: #1f2224;
+            display:inline-block;
+            border: 1px solid #5d6267;        
+            font: bold 14px Arial, sans-serif;
+            text-decoration: none;
+            border-radius: 2px;
+            padding: 6px 20px;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            background-color: #c76a37;
+            border-color: #091117;
+        }
+	
+	</style>
+</head>
+<body>
+ 
+
+    <h1>Добро пожаловать в "РАСТИЖОП"!</h1>
+
+    <form action="#">
+        <p>Размер бургера:</p>
+        <fieldset>
+            <label>
+                <input type="radio" name="size" value="big" id="bigburger" data-price="100" data-cal="40"> Большой "Разарви хавало" (100 рублей, 40 калорий). 
+            </label><br>
+            <label>
+                <input type="radio" name="size" value="small" checked id="smallburger" data-price="50" data-cal="20"> Маленикий "Диетический" (50 рублей, 20 калорий).
+            </label>
+        </fieldset>
+        <p>Выбери начинку:</p>
+        <fieldset>
+                <label>
+                    <input type="radio" name="fill" value="cheese" checked id="cheese" data-price="10" data-cal="20"> С сыром (+10 рублей, +20 калорий).
+                </label><br>
+                <label>
+                    <input type="radio" name="fill" value="salad" id="salad" data-price="20" data-cal="5"> С салатом (+20 рублей, +5 калорий).
+                </label><br>
+                <label>
+                    <input type="radio" name="fill" value="potato" id="potato" data-price="15" data-cal="10"> С картофелем (+15 рублей, +10 калорий). 
+                </label>
+            </fieldset>
+        <p>Дополнительно:</p>    
+        <fieldset>
+            <label>
+                <input type="checkbox" name="topping" value="seasoning" id="seasoning" data-price="15" data-cal="0"> Посыпать приправой (+15 рублей, +0 калорий)
+            </label><br>
+            <label>
+                <input type="checkbox" name="topping" value="mayonnaise" id="mayonnaise" data-price="20" data-cal="5"> Полить майонезом (+20 рублей, +5 калорий). 
+            </label>
+           
+        </fieldset>
+    </form>
+    <button id="counter">Рассчитать</button>
+    <p>Цена: <span id="totalsum">0</span></p>
+    <p>Количество калорий: <span id="totalcal">0</span></p>
+
+      
+    <script>
+        class Burger {
+                constructor(size, fill, add) {
+                this.size = new Param(this._select(size));
+                this.filling = new Param(this._select(fill));
+                this.addon = this._getAdds(add); 
+                }
+                _select(name) {
+                    return document.querySelector(`input[name="${name}"]:checked`)
+                }
+                _getAdds(name) {
+                    let result = [];
+                    this._selectAll(name).forEach(element => result.push(new Param(element))); 
+                    return result;
+                }
+    
+                _selectAll(name) { 
+                    return [...document.querySelectorAll(`input[name="${name}"]:checked`)] 
+                }
+                _getAmount() {
+                    let result = this.size.price + this.filling.price;
+                    this.addon.forEach(addon => result += addon.price);
+                    return result;
+                }
+                _getCalories() {
+                    let result = this.size.cal + this.filling.cal;
+                    this.addon.forEach(addon => result += addon.cal);
+                    return result;
+                }
+                show() {
+                    let sumkcal = document.querySelector("#totalcal");
+                    let sumprice = document.querySelector("#totalsum");
+                    sumkcal.textContent = `${this._getCalories()}`;
+                    sumprice.textContent = `${this._getAmount()} руб.`;
+                }
+            }
+    
+         class Param {
+            constructor(el) {
+                this.price = +el.dataset['price'];
+                this.cal = +el.dataset['cal'];
+            }
+         }
+    
+    
+        let okBtn = document.querySelector('#counter');
+        okBtn.addEventListener('click', () => {
+            let newBurger = new Burger ('size', 'fill', 'addon')
+            newBurger.show();
+            console.log(newBurger);
+        });
+    </script>
+
+
+	
+
+</body>
+</html>
