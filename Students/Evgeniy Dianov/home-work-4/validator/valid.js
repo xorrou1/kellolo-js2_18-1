@@ -42,8 +42,6 @@ class Validator {
                 field.classList.add('err__field');
                 this._addErrMessage(field);
                 this._watchField(field);
-
-
             }
         }
     }
