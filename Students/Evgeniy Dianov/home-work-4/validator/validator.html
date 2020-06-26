@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <form action="#" method="POST" class="form" id="newForm">
+        <div class="">
+            <label>
+                Имя <br>
+                <input type="text" name="name" id="name">
+            </label>
+        </div>
+
+        <div class="">
+            <label>
+                Телефон <br>
+                <input type="tel" name="tel" id="tel">
+            </label>
+        </div>
+
+        <div class="">
+            <label>
+                e-mail <br>
+                <input type="email" name="email" id="email">
+            </label>
+        </div>
+
+        <button type="submit" id="btn">Отправить</button>
+    </form>
+
+
+    <script src="valid.js"></script>
+    <script>
+        window.onload = () => {
+            document.getElementById('newForm').addEventListener('submit', e => {
+                let valid = new Validator('#newForm');
+                if (!valid.valid) {
+                    e.preventDefault();
+                }
+            })
+        }
+
+    </script>
+</body>
+
+</html>

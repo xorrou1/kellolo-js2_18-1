@@ -2,10 +2,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    
     output: {
         filename: 'script/bundle.js'
     },
-
+    
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'style/[name].css',
@@ -21,11 +22,10 @@ module.exports = {
                 test: /\.css$/i,
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
-
         ],
     },
     devServer: {
-        port: 3000,
-        open: false,
+      port: 3000,
+      open: false,
     }
-};
+  };
