@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import Catalog from '../components/Catalog'
-import Basket from '../components/Basket'
+import Catalog from '../components/Catalog.vue'
+import Basket from '../components/Basket.vue'
 // import catalogItem from '../components/Item'
 
 export default {

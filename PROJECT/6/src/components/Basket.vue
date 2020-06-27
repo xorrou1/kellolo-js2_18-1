@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import item from './Item'
+import item from './Item.vue'
 export default {
     components: { item },
     data() {

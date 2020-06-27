@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/dist/plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports = {
     // entry: {
     //     main: './src/app.js'
