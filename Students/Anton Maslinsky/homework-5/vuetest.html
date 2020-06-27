@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    </head>
+
+    <body>
+        <div id="app">
+            <button @click="showComments = !showComments">{{ btnText}}</button>
+            <p> {{ testComp }}</p>
+            <input type="text" v-model="test">
+            <!-- Директива v-show всегда присутствует в DOM, изменяется только св-во display. Менее затратно по ресурсам при частом использовании. -->
+            <div class="container" v-show="showComments">
+                <div class="post" v-for="item of items">
+                    <div class="user">
+                        <strong>{{item.name}}</strong> 
+                        <button @click="sayHi(item.name)">SayHi</button>
+                    </div>
+                    <div class="post-body">
+                        {{item.body}}
+                    </div>
+                    <div class="post-footer">
+                        <a href="#">{{item.email}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                test: '',
+                showComments: true,
+                items: []
+            },
+            methods: {
+                sayHi(name) {
+                    alert(`${name} greets you!`);
+                }
+            },
+            computed: {
+                testComp() {
+                    return this.test ? this.test : 'текст какой-то....';
+                },
+                btnText() {
+                    return this.showComments ? 'Hide' : 'Show'
+                }
+            },
+            mounted() {
+                console.log('mounted успешно')
+                fetch('https://raw.githubusercontent.com/anton-maslinsky/test/master/comments.json')
+                    .then(dat => dat.json())
+                    .then(comments => { this.items = comments})
+                    .finally(() => { console.log(this.items)})
+            },
+
+        }); 
+    </script>
+</body>
+</html>

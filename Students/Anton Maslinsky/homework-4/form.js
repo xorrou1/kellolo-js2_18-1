@@ -1,7 +1,7 @@
 function valideForm() {
     let regexpName = /^[a-zа-яё]+$/gi,
         regexpEmail = /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/,
-        regexpPhone = /^\+\d{1,3}\s?\(\d{3}\)\s?\d{3}(-\d{2}){2}$/,
+        regexpPhone = /^\+7\(\d{3}\)\d{3}-\d{4}$/,
         regexpMessage = /[a-zа-яё0-9]/;
 
     let name = document.getElementsByName('name')[0].value,
