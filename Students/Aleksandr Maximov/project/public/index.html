@@ -1,4 +1,4 @@
-npm <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,7 @@ npm <!DOCTYPE html>
     <title>Document</title>
 </head>
 <body>
-    <header>
+    <header id="app">
         <div class="logo">GeekShop</div>
         <div class="basket">
             <form action="#" class="search-form">
@@ -15,8 +15,8 @@ npm <!DOCTYPE html>
                     <i class="fas fa-search"></i>
                 </button>
             </form>
-            <button class="btn-basket">Корзина</button>
-            <div class="basket-block invisible">
+            <button class="btn-basket" @click="showComments = !showComments" >Корзина</button>
+            <div class="basket-block invisible" v-show="showComments">
                 <div class="basket-items">
                     <!--Basket elems-->
                     
@@ -31,7 +31,20 @@ npm <!DOCTYPE html>
         </div>
     </main>
     
-    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+    <script>
+        export defaulf {
+            component: {},
+            data() {
+                return {
 
+                }
+            },
+            props: {
+
+            },
+            methods: {},
+            mounted( {})
+        }
+    </script>
 </body>
 </html>

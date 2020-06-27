@@ -1,4 +1,5 @@
-'use strict';
+//https://raw.githubusercontent.com/gavrilovem/catalogData/master/catalogData.json
+//https://raw.githubusercontent.com/gavrilovem/catalogData/master/getBasket.json
 
 class List {
     constructor(url, container, basket) {
@@ -17,7 +18,7 @@ class List {
                 this._render();
                 this._handleEvents();
                 console.log(this.constructor.name, this)
-            })
+        })
     }
 
     _get(url) {
@@ -29,42 +30,12 @@ class List {
         this.items.forEach (item => {
             htmlStr += new connect[this.constructor.name](item).render();
         })
-        document.querySelector(this.container).innerHTML = htmlStr;
+        document.querySelector(this.container).innerHTML = htmlStr;      
     }
 
-    _handleEvents() {
+    _handleEvents() { 
         return ''
     }
-
-    add(item/*id*/) {
-        //let find = this.items.find(el => el.id_product === item.id);
-        if (find) {
-            find.quantity++;
-            this._render();
-        } else {
-            let itemNew = { id_product: item.id, product_name: item.name, price: +item.price, quantity: 1 };
-            this.items.push(itemNew);
-            this._render();
-        }
-    }
-    /*
-    add(item){
-    if(this.items.length){
-        for (let i = 0; i < this.items.length; i++) {
-                if(this.items[i].id_product === item.id){
-                    this.items[i].quantity++;
-                    console.log('Элемент added -- id: ' + itemId);
-                }
-                else{
-                    let itemNew = { id_product: item.id, product_name: item.name, price: +item.price, quantity: 1 };
-                    this.items.push(itemNew);
-                }
-            }
-      }
-    }
-
-
-     */
 }
 
 class Item {
@@ -97,12 +68,10 @@ class Catalog extends List {
     }
     _handleEvents() {
         document.querySelector(this.container).addEventListener('click', evt => {
-            if (evt.target.name === 'buy') {
+            if (evt.target.name == 'buy') {
                 this.basket.add(evt.target.dataset);
-                console.log('1');
             }
         });
-
     }
 }
 
@@ -112,28 +81,32 @@ class Basket extends List {
     }
     _handleEvents() {
         document.querySelector(this.container).addEventListener('click', evt => {
-            if (evt.target.name === 'remove') {
+            if (evt.target.name == 'remove') {
                 this.remove(evt.target.dataset.id);
             }
         });
 
         document.querySelector('.btn-basket').addEventListener('click', evt => {
-            console.log(evt.target);
-           document.querySelector('.basket-block').classList.toggle('invisible');
+            document.querySelector('.basket-block').classList.toggle('invisible');
         });
     }
 
-
-        remove(itemId){
-            for (let i = 0; i < this.items.length; i++) {
-                if(this.items[i].id_product === itemId){
-                    this.items.remove(this.items[i]);
-                    console.log('Элемент удален -- id: ' + itemId);
-                }
-            }
-            //let find = this.items.find(el => el.id_product === itemId);
-           // console.log('попытка удалить ' + itemId)
+    add(item) {
+        let find = this.items.find(el => el.id_product == item.id);
+        if (find) {
+            find.quantity++;
+            this._render();
+        } else {
+            let itemNew = { id_product: item.id, product_name: item.name, price: +item.price, quantity: 1 };
+            this.items.push(itemNew);
+            this._render();
         }
+    }
+
+    remove(itemId) {
+        let find = this.items.find(el => el.id_product == itemId);
+        console.log('попытка удалить ' + itemId)
+    }
 }
 
 class CatalogItem extends Item {}
@@ -148,7 +121,7 @@ class BasketItem extends Item {
                     <img src="http://placehold.it/100x80" alt="${this.item.product_name}">
                     <div class="product-desc">
                         <p class="product-title">${this.item.product_name}</p>
-                        <p class="product-amount">${this.item.}</p>
+                        <p class="product-amount">${this.item.quantity}</p>
                         <p class="product-single-price">${this.item.price}</p>
                     </div>
                     <div class="right-block">
