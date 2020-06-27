@@ -1,0 +1,21 @@
+.container {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+.post {
+    border-radius: 5px;
+    border: 2px solid #cccccc;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+.post-footer {
+    text-align: right;
+}
+.font-it {
+    font-style: italic;
+}
+.red {
+    color: red;
+}
