@@ -4,4 +4,3 @@ import './layout/css/normalize.css'
 import app from './components/main.js'
 
 app();
-

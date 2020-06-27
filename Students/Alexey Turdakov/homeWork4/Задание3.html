@@ -1,0 +1,141 @@
+ <!-- 
+        3. *Создать форму обратной связи с полями: Имя, Телефон, E-mail, текст, кнопка Отправить. 
+            При нажатии на кнопку Отправить произвести валидацию полей следующим образом:
+            a. Имя содержит только буквы.
+            b. Телефон имеет вид +7(000)000-0000.
+            c. E-mail имеет вид mymail@mail.ru, или my.mail@mail.ru, или my-mail@mail.ru.
+            d. Текст произвольный.
+            e. Если одно из полей не прошло валидацию, необходимо выделить это поле красной рамкой и сообщить пользователю об ошибке.
+    -->
+
+
+ <!DOCTYPE html>
+ <html lang="en">
+
+ <head>
+
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Задание 3</title>
+
+     <style>
+         .invalid {
+             border: 2px solid red;
+         }
+
+         .valid {
+             border: 2px solid green;
+         }
+
+         div {
+             padding: 10px;
+             background: red;
+             display: none;
+         }
+     </style>
+ </head>
+
+ <body>
+
+     <form action="#" name="form1">
+         <p>
+             <label>
+                 Имя:
+                 <input type="text" name="userName" placeholder="Введите имя(только буквы)" required>
+                 <div>Имя содержит только буквы!</div>
+             </label>
+         </p>
+         <p>
+             <label>
+                 Телефон:
+                 <input type="tel" name="phone" placeholder="+7(000)000-0000" required>
+                 <div>Телефон имеет вид +7(000)000-0000</div>
+             </label>
+         </p>
+         <p>
+             <label>
+                 Email:
+                 <input type="email" name="email" placeholder="введите ваш email" required>
+                 <div>E-mail имеет вид mymail@mail.ru и не только</div>
+             </label>
+         </p>
+         <p>
+             <label>
+                 Text:
+                 <input type="text" name="text" placeholder="любой произвольный текст">
+                 <div>Текст произвольный</div>
+             </label>
+         </p>
+
+
+         <input type="submit" value="Отправить" />
+     </form>
+
+     <script>
+         'use strict';
+         let div = document.getElementsByTagName('div');
+         if (window.addEventListener) window.addEventListener("load", init, false);
+         else if (window.attachEvent) window.attachEvent("onload", init);
+
+         function init() {
+             form1.userName.onchange = nameOnChange;
+             form1.phone.onchange = phoneOnChange;
+             form1.email.onchange = emailOnChange;
+             form1.text.onchange = textOnChange;
+             form1.onsubmit = onsubmiHandler;
+         }
+
+         function validate(elem, pattern) { // установка CSS класса 
+             let res = elem.value.search(pattern);
+             if (res == -1) {
+                 elem.className = "invalid";
+             } else {
+                 elem.className = "valid";
+
+             }
+         }
+
+         // обработчики событий изменения текста в окне.
+         function nameOnChange() {
+             const pattern = /([a-zа-яё])$/i;
+             validate(this, pattern);
+         }
+
+         function textOnChange() {
+             const pattern = /([0-9a-z_])$/i;
+             validate(this, pattern);
+         }
+
+         function emailOnChange() {
+             const pattern = /\b[a-z0-9._]+@[a-z0-9.-]+\.[a-z]{2,4}\b/i;
+             validate(this, pattern);
+         }
+
+         function phoneOnChange() {
+             const pattern = /\+7\(\d{3}\)\d{3}-\d{4}/;
+             validate(this, pattern);
+         }
+
+         // событие при отправке формы на сервер.
+         function onsubmiHandler() {
+
+             let invalid = false;
+
+             for (let i = 0; i < form1.elements.length; ++i) {
+                 let e = form1.elements[i];
+                 // проверка типа элемента и наличия обработчика события onchange.
+                 if (e.type == "text" && e.onchange) {
+                     e.onchange(); // запуск события onchanhe
+                     if (e.className == "invalid") invalid = true;
+                 }
+             }
+
+             if (invalid) {
+                 alert("Допущены ошибки при заполнении формы.");
+                 return false; // отмена отправки формы.
+             }
+         }
+     </script>
+ </body>
+
+ </html>
