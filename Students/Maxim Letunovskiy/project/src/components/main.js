@@ -83,9 +83,9 @@ class Basket extends List {
             }
         });
 
-        document.querySelector('.btn-basket').addEventListener('click', evt => {
-            document.querySelector('.basket-block').classList.toggle('invisible');
-        });
+        // document.querySelector('.btn-basket').addEventListener('click', evt => {
+        //     document.querySelector('.basket-block').classList.toggle('invisible');
+        // });
     }
 
     add(item) {
@@ -135,6 +135,28 @@ class BasketItem extends Item {
     }
 }
 
+let app = new Vue({
+    el: '#app',
+    data: {
+        searchValue: '',
+        isInvisible: true
+    },
+    methods: {
+        filterGoods() {
+            alert('items filtered');
+        },
+        toggleBasket() {
+            this.isInvisible ? this.isInvisible = false : this.isInvisible = true;
+        }
+    },
+    computed: {
+        
+        testComp() {
+            return this.searchValue ? this.searchValue : 'test';
+        },
+        
+    },
+});
 
 let connect = {
     'Catalog': CatalogItem,
