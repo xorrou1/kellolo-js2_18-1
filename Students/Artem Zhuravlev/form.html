@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        form {
+            width: 300px
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="#" id="uForm">
+        <div class="div" style="text-align: center">Крутой Гамбургер</div>
+        <fieldset>
+            <label>
+                <input type="radio" name="Size" value="50" data-cal="20"> Маленький
+            </label>
+            <label>
+                <input type="radio" name="Size" value="150" data-cal="40"> Большой
+            </label>
+        </fieldset>
+        <fieldset>
+            <label>
+                <input type="radio" name="Topping" value="10" data-cal="20"> С сыром
+            </label>
+            <label>
+                <input type="radio" name="Topping" value="20" data-cal="5"> С салатом
+            </label>
+            <label>
+                <input type="radio" name="Topping" value="15" data-cal="10"> С картофелем 
+            </label>
+        </fieldset>
+        <fieldset>
+            <label>
+                <input type="checkbox" name="ToppingPlus" value="15" data-cal="0"> Посыпать приправой
+            </label>
+            <label>
+                <input type="checkbox" name="ToppingPlus" value="20" data-cal="5"> Полить майонезом 
+            </label>
+        </fieldset>
+    </form>
+
+    <button id="okBtn">Add hamburger</button>
+    <script>
+        let form = document.querySelector ('#uForm')
+        let btn = document.querySelector ('#okBtn')
+        let hamburger = []
+
+        btn.addEventListener ('click', addHamburger)
+
+        function addHamburger () {
+            let newHamburger = new Hamburger('Size', 'Topping', "ToppingPlus")
+            hamburger.push (newHamburger)
+            console.log(hamburger)
+        }
+
+        class Hamburger {
+            constructor (size, topping, toppingPlus) {
+                let Humsize = this._size (size)
+                let HumsizeCal = this._sizeCal(size)
+                let Humtopping = this._topping (topping)
+                let HumtoppingCal = this._toppingCal (topping)
+                let HumtoppingPlus = this._toppingPlus (toppingPlus)
+                let HumtoppingPlusCal = this._toppingPlusCal (toppingPlus)
+                this.Price = this._calculatePrice (Humsize, Humtopping, HumtoppingPlus);
+                this.Cal = this._calculateCal (HumsizeCal, HumtoppingCal, HumtoppingPlusCal);                
+            }
+            _topping (attrName) {
+                let obj = document.querySelector (`input[name=${attrName}]:checked`)
+                return obj.value
+            }
+            _toppingCal (attrName) {
+                let obj = document.querySelector (`input[name=${attrName}]:checked`)
+                return obj.dataset.cal
+            }
+            _size (attrName) {
+                let obj = document.querySelector (`input[name=${attrName}]:checked`)
+                return obj.value
+            }
+            _sizeCal (attrName) {
+                let obj = document.querySelector (`input[name=${attrName}]:checked`)
+                return obj.dataset.cal
+            }
+            _calculatePrice(a, b, c){
+                let sumArr = 0;
+                for(var i = 0; i < c.length; i++){
+                   sumArr += parseInt(c[i])
+                }
+                return parseInt(a)+parseInt(b)+sumArr;
+            }
+            _calculateCal(a, b, c){
+                let sumArr = 0;
+                for(var i = 0; i < c.length; i++){
+                   sumArr += parseInt(c[i])
+                }
+                return parseInt(a)+parseInt(b)+sumArr;
+            }
+
+           _toppingPlus (attrName) {
+                let objArr = [...document.querySelectorAll (`input[name=${attrName}]:checked`)]
+                let arr = objArr.map(el => el.value);
+                return arr;
+            } 
+            _toppingPlusCal (attrName) {
+                let objArr = [...document.querySelectorAll (`input[name=${attrName}]:checked`)]
+                let arr = objArr.map(el => el.dataset.cal);
+                return arr;
+            } 
+            
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<style>
+	.form {
+		display: flex;
+		flex-direction: column;
+		width: 200px;
+	}
+	input {
+		margin: 10px 0px 10px 0px;
+	}
+
+	.red {
+		border-color: red;
+	}
+
+	.green {
+		border-color: green;
+	}
+
+	p {
+		color: red;
+	}
+
+</style>
+<body>
+	<div class="form_body">
+		<form action="#" class="form">
+			<label for="" class="name"> Имя
+				<input id="name" type="text" value="Имя"> 
+			</label>
+			<label for="" class="name"> Номер телефона
+				<input id="tel" type="tel" value="+7(000)000-0000">
+			</label>
+			<label for="" class="name"> E-mail
+				<input id="e-mail" type="email" value="mymail@mail.ru">
+			</label>
+			Сообщение
+			<textarea cols="30" rows="10"></textarea>
+			<input id="okBtn" type="submit">
+		</form>
+	</div>
+
+
+	<script>
+		let form = document.querySelector('#uForm');
+		let okBtn = document.querySelector('#okBtn');
+		
+		let inputName = document.querySelector('#name');
+		let inputTel = document.querySelector('#tel');
+		let inputEmail = document.querySelector('#e-mail');
+		// с одной переменной почему то изменяется сообщение под всеми полями, причем выводится только под самым последним
+		// let message = document.createElement('p');
+		let messageName = document.createElement('p');
+		let messageTel = document.createElement('p');
+		let messageEmail = document.createElement('p');
+		okBtn.addEventListener('click', checkValue);
+		
+		function checkValue() {
+			
+			
+			const regExpName = /\D/gi // все буквы не зависимо от регистра
+			if (regExpName.test(inputName.value)) {
+				inputName.classList.toggle("green"); 
+				// не пойму как сделать чтоб он не переключал классы при прохождении валидации
+				// здесь получается так что когда имя введено правильно при нажатиях на кнопку отправить
+				// каждый раз меняется класс (с красного на зеленый)
+				messageName.innerHTML = '';
+			} else {
+				inputName.classList.toggle("red");
+				messageName.innerHTML = 'Имя должно содержать только буквы!';
+				inputName.after(messageName);
+			}
+
+			const regExpTel = /\+7\(\d{3}\)\d{3}-\d{4}/ // формат +7(000)000-0000
+			if (regExpTel.test(inputTel.value)) {
+				inputTel.classList.toggle("green");
+				messageTel.innerHTML = '';
+			} else {
+				inputTel.classList.toggle("red");
+				messageTel.innerHTML = 'Телефон должен иметь вид +7(000)000-0000!';
+				inputTel.after(messageTel);
+			}
+
+			const regExpEmail = /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/ //E-mail имеет вид mymail@mail.ru, или my.mail@mail.ru, или my-mail@mail.ru
+			if (regExpEmail.test(inputEmail.value)) {
+				inputEmail.classList.toggle("green");
+				messageEmail.innerHTML = '';
+			} else {
+				inputEmail.classList.toggle("red");
+				messageEmail.innerHTML = 'E-mail должен иметь вид mymail@mail.ru, или my.mail@mail.ru, или my-mail@mail.ru!';
+				inputEmail.after(messageEmail);
+			}
+		}
+	</script>
+</body>
+</html>

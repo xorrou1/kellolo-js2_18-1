@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        'use strict'
+        let baby;
+        class Human {
+            constructor(name, age) {
+                this.humanName = name;
+                this.humanAge = age;
+                this.fishes = 0;
+                this.money = 300;
+                this.weddingStatus = "холост"
+            }
+            gowedding(name) {
+                let answer = prompt(
+                    `${this.humanName} хочет сыграть свадьбу с ${name.humanName}, напишите да если согласны`);
+                if (answer == "да" || answer == "yes") {
+                    alert("Горька!")
+                    this.weddingStatus = `В браке с ${name.humanName}`;
+                    name.weddingStatus = `В браке с ${this.humanName}`;
+                } else {
+                    alert("Ну как хотите")
+                }
+            }
+            greet(pers = "тебя") {
+                console.log(this.humanName + ` приветствует ${pers}`)
+            }
+            goWork(hours) {
+                let money = hours * this.job;
+                console.log(this.humanName + ` проработал(а) ${hours} часов и заработал(а) ${money} $`);
+                this.money += money;
+
+            }
+
+        }
+
+
+        class Male extends Human {
+            constructor(name, age) {
+                super(name, age)
+                this.job = 8;
+            }
+            goFishing() {
+                let fishes = Math.round(Math.random() * 10);
+                console.log(this.humanName + ` поймал ${fishes} рыбок`)
+                this.fishes += fishes;
+            }
+        }
+
+        class Female extends Human {
+            constructor(name, age) {
+                super(name, age)
+                this.job = 6;
+            }
+            goBaby() {
+                let babyName = prompt("Имя ребенка?");
+                baby = new Male(babyName, 0);
+            }
+            goShoping() {
+                if (this.money <= 0) {
+                    console.log("Нет денег шопиться, иди работать!");
+                } else {
+                    let spend = Math.round(Math.random() * 100);
+                    this.money -= spend;
+                    console.log(this.humanName + " пошла шопиться и потратила " + spend + " $");
+                }
+            }
+        }
+
+        let oleg = new Male("Олег", 28)
+        let olga = new Female("Ольга", 25)
+    </script>
+</body>
+
+</html>

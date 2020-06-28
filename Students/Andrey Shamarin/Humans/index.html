@@ -18,12 +18,12 @@
                 this.humanName = name;
                 this.humanAge = age;
                 this.money = 100;
-                this.whantsToMarry = 0;
+                this.wantsToMarry = 0;
                 this.married = 0;
             }
             greet(pers = 'you') {
                 console.log(this.humanName + ` greets ${pers}`);
-                this.whantsToMarry =
+                this.wantsToMarry =
                 1; // если персонаж приветствует другого то хочет на нем жениться (таков здешний мир:))
             }
 
@@ -43,25 +43,43 @@
                 if (this.married == 1) {
                     let maleNames = ['dmitry', 'andrey', 'denis'];
                     let femaleNames = ['tatyana', 'elena', 'liza'];
-                    let randomSex = Math.round(Math.random() * 2);
-                    if (randomSex == 1) {
+                    let randomGender = Math.round(Math.random() * 2);
+                    this.generateRandChild (maleNames, femaleNames, randomGender)
+                    // if (randomGender == 1) {
+                    //     let i = Math.round(Math.random() * maleNames.length);
+                    //     let name = maleNames[i];
+                    //     // хотелось бы чтоб вместо child здесь писалось имя из массива имен, но как это сделать пока не ясно
+                    //     let child = new Male(name, 0);
+                    //     console.log('You have a child ' + child.humanName);
+                    //     childrens.push(child);
+                    // } else {
+                    //     let i = Math.round(Math.random() * femaleNames.length);
+                    //     let name = femaleNames[i];
+                    //     // хотелось бы чтоб вместо child здесь писалось имя из массива имен, но как это сделать пока не ясно
+                    //     let child = new Female(name, 0);
+                    //     console.log('You have a child ' + child.humanName);
+                    //     childrens.push(child);
+                    // };
+                } else {
+                    console.log(this.humanName + ' isnt marryed');
+                }
+            }
+            generateRandChild(maleNames, femaleNames, randomGender) {
+                if (randomGender == 1) {
                         let i = Math.round(Math.random() * maleNames.length);
                         let name = maleNames[i];
                         // хотелось бы чтоб вместо child здесь писалось имя из массива имен, но как это сделать пока не ясно
                         let child = new Male(name, 0);
                         console.log('You have a child ' + child.humanName);
                         childrens.push(child);
-                    } else {
-                        let i = Math.round(Math.random() * femaleNames.length);
-                        let name = femaleNames[i];
-                        // хотелось бы чтоб вместо child здесь писалось имя из массива имен, но как это сделать пока не ясно
-                        let child = new Female(name, 0);
-                        console.log('You have a child ' + child.humanName);
-                        childrens.push(child);
-                    };
                 } else {
-                    console.log(this.humanName + ' isnt marryed');
-                }
+                    let i = Math.round(Math.random() * femaleNames.length);
+                    let name = femaleNames[i];
+                    // хотелось бы чтоб вместо child здесь писалось имя из массива имен, но как это сделать пока не ясно
+                    let child = new Female(name, 0);
+                    console.log('You have a child ' + child.humanName);
+                    childrens.push(child);
+                };
             }
         }
 
@@ -78,7 +96,7 @@
             }
 
             toMarry() {
-                if (oleg.whantsToMarry == 1 && olga.whantsToMarry == 1) {
+                if (oleg.wantsToMarry == 1 && olga.wantsToMarry == 1) {
                     olga.married = 1;
                     oleg.married = 1;
                     console.log(this.humanName + ' is now married to olga, Greetings!!!');

@@ -147,3 +147,18 @@ export default () => {
     let basket = new Basket();
     let catalog = new Catalog(basket);
 }
+
+// let app = new Vue({
+//     el: '#app',
+//     data: {
+
+//     },
+
+//     methods: {
+//         filterGoods(){},
+//         isVisibleChart(){
+//             this.isVisibleChart ? this.isVisibleChart = false : this.isVisibleChart = true; 
+//         }
+//     },
+    
+// }) 
