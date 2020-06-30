@@ -1,6 +1,6 @@
 class List {
     constructor(url, container, basket) {
-        this.url = 'https://raw.githubusercontent.com/maximle/online-store-api/master/responses' + url;
+        this.url = 'https://raw.githubusercontent.com/gavrilovem/catalogData/master' + url;
         this.container = container;
         this.items = [];
         this._init(basket);
@@ -9,28 +9,24 @@ class List {
     _init(basket = false) {
         this._get(this.url)
             .then(data => {
-                this.items = !basket ? data : data.contents;
-                // this.items = data.length ? data : data.contents;
-                //catalog => [...], basket => {... contents: [...]}
+                this.items = basket ? data.contents : data;
                 this._render();
                 this._handleEvents();
-                console.log(this.constructor.name, this)
-        })
+            })
     }
 
     _get(url) {
         return fetch(url).then(data => data.json());
     }
-
     _render() {
         let htmlStr = '';
-        this.items.forEach (item => {
+        this.items.forEach(item => {
             htmlStr += new connect[this.constructor.name](item).render();
-        })
-        document.querySelector(this.container).innerHTML = htmlStr;      
+        });
+        document.querySelector(this.container).innerHTML = htmlStr;
     }
 
-    _handleEvents() { 
+    _handleEvents() {
         return ''
     }
 }
@@ -42,7 +38,7 @@ class Item {
 
     render() {
         return `<div class="catalog-item">
-                    <img src="http://placehold.it/300x200" alt="${this.item.product_name}">
+                    <img src="${this.item.img}" alt="${this.item.product_name}">
                     <div class="desc">
                         <h3>${this.item.product_name}</h3>
                         <p>${this.item.price} $</p>
@@ -59,33 +55,35 @@ class Item {
 }
 
 class Catalog extends List {
-    constructor(basket, url = '/catalogData2.json', container = '.catalog-items') {
+    constructor(basket, url ='/catalogData.json', container = '.catalog-items') {
         super(url, container);
         this.basket = basket;
     }
+
     _handleEvents() {
-        document.querySelector(this.container).addEventListener('click', evt => {
-            if (evt.target.name == 'buy') {
-                this.basket.add(evt.target.dataset);
+        document.querySelector(this.container).addEventListener('click', (event) => {
+            if (event.target.name == 'buy') {
+                this.basket.add(event.target.dataset)
             }
-        });
+        })
     }
 }
 
 class Basket extends List {
-    constructor(url = '/getBasket.json', container = '.basket-items', basket = true) {
+    constructor(url ='/getBasket.json', container = '.basket-items', basket = true) {
         super(url, container, basket);
     }
-    _handleEvents() {
-        document.querySelector(this.container).addEventListener('click', evt => {
-            if (evt.target.name == 'remove') {
-                this.remove(evt.target.dataset.id);
-            }
-        });
 
-        // document.querySelector('.btn-basket').addEventListener('click', evt => {
-        //     document.querySelector('.basket-block').classList.toggle('invisible');
-        // });
+    _handleEvents() {
+        document.querySelector(this.container).addEventListener('click', (event) => {
+            if (event.target.name == 'remove') {
+                this.remove(event.target.dataset.id)
+            }
+        })
+
+        document.querySelector('.btn-basket').addEventListener('click', (event) => {
+            document.querySelector('.basket-block').classList.toggle('invisible')
+        })
     }
 
     add(item) {
@@ -94,21 +92,21 @@ class Basket extends List {
             find.quantity++;
             this._render();
         } else {
-            let itemNew = { id_product: item.id, product_name: item.name, price: +item.price, quantity: 1 };
+            let itemNew = { id_product: item.id, product_name: item.name, price: item.price, quantity: 1};
             this.items.push(itemNew);
             this._render();
         }
     }
 
-    remove(itemId) {
-        let find = this.items.find(el => el.id_product == itemId);
-        console.log('попытка удалить ' + itemId);
-        if (find.quantity == 1) {
-            this.items.splice(this.items.indexOf(find), 1);
-        } else {
+    remove(item) {
+        let find = this.items.find(el => el.id_product == item);
+        if (find.quantity > 1) {
             find.quantity--;
+            this._render();
+        } else {
+            this.items.splice(this.items.indexOf(find), 1);
+            this._render();
         }
-        this._render();
     }
 }
 
@@ -124,7 +122,7 @@ class BasketItem extends Item {
                     <img src="http://placehold.it/100x80" alt="${this.item.product_name}">
                     <div class="product-desc">
                         <p class="product-title">${this.item.product_name}</p>
-                        <p class="product-amount">${this.item.quantity}</p>
+                        <p class="product-quantity">${this.item.quantity}</p>
                         <p class="product-single-price">${this.item.price}</p>
                     </div>
                     <div class="right-block">
@@ -135,32 +133,9 @@ class BasketItem extends Item {
     }
 }
 
-let app = new Vue({
-    el: '#app',
-    data: {
-        searchValue: '',
-        isInvisible: true
-    },
-    methods: {
-        filterGoods() {
-            alert('items filtered');
-        },
-        toggleBasket() {
-            this.isInvisible ? this.isInvisible = false : this.isInvisible = true;
-        }
-    },
-    computed: {
-        
-        testComp() {
-            return this.searchValue ? this.searchValue : 'test';
-        },
-        
-    },
-});
-
-let connect = {
-    'Catalog': CatalogItem,
-    'Basket': BasketItem
+const connect = {
+    "Catalog": CatalogItem,
+    "Basket": BasketItem
 }
 
 export default () => {

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Dmitry Yudin">
+	<title>HW_JS2.4.Yudin</title>
+	<style>
+		body { 
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: rgb(55, 47, 38);
+            color: rgb(213, 213, 213);
+            padding: 5%;
+            text-align: center;
+		}
+
+        ul {
+            list-style: none;
+        }
+
+        a.link-btn {
+        color: #fff;
+        background: #1f2224;
+        display:inline-block;
+        border: 1px solid #5d6267;        
+        font: bold 14px Arial, sans-serif;
+        text-decoration: none;
+        border-radius: 2px;
+        padding: 6px 20px;
+        border-radius: 10px;
+        }
+        a.link-btn:hover {
+            background-color: #c76a37;
+            border-color: #091117;
+		}
+	
+	</style>
+</head>
+<body>
+        <ul>
+            <li>One: 'Hi Mary.' Two: 'Oh, hi.' </li>
+            <li>One: 'How are you doing?' </li><br>
+            <li>Two: 'I'm doing alright. How about you?'</li><br>
+            <li>One: 'Not too bad. The weather is great isn't it?' </li><br>
+            <li>Two: 'Yes. It's absolutely beautiful today.'</li><br>
+            <li>One: 'I wish it was like this more frequently.' </li><br>
+            <li>Two: 'Me too.' One: 'So where are you going now?' </li>
+            <li>Two: 'I'm going to meet a friend of mine at the department store'</li><br>
+            <li>One: 'Going to do a little shopping?' </li><br>
+            <li>Two: 'Yeah, I have to buy some presents for my parents.'</li><br>
+            <li>One: 'What's the occasion?' Two: 'It's their anniversary.'</li>
+            <li>One: 'That's great. Well, you better get going. You don't want to be late.'</li><br>
+            <li>Two: 'I'll see you next time.' One: 'Sure.' Bye.'</li><br><br>
+        </ul>
+        <a class="link-btn" href="javascript:void(0);" onclick="btn()"><h1>"</h1></a>
+        <a class="link-btn" href="javascript:void(0);" onclick="document.location.reload()" ><h1>'</h1></a>
+        
+    
+    
+
+    <script>
+        function btn() {
+            let str = document.body.innerHTML;
+            let reg = /\B'/igm;
+            str = str.replace(reg, '"');
+            document.body.innerHTML = str;
+        }
+    </script>
+	
+
+	
+
+</body>
+</html>

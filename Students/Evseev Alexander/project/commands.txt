@@ -1,0 +1,39 @@
+0)  npm init -y
+// инициализация node.js
+
+1) npm i -D webpack webpack-cli
+// установка webpack
+
+2) npm i bootstrap jquery popper.js
+// установка бутстрапа
+
+3) в файле package.json  в скриптах ( "scripts": { ...  }, ) 
+меняем строку ( "test": "echo \"Error: no test specified\" && exit 1" ) 
+на  ( "build": "webpack --mode development" )
+
+4) создаем папку /src в корне проекта, 
+5) и в ней файл index.js
+
+6) при запуске "npm run build" заработает webpack
+
+//2 занятие:
+
+npm init -y
+npm i -D webpack webpack-cli css-loader html-webpack-plugin mini-css-extract-plugin
+npm i bootstrap popper.js jquery
+npm i -D webpack-dev-server
+
+в файле package.json  в "scripts": { ...  },
+добавляем:
+"build": "webpack --mode development",
+"dev": "webpack-dev-server --open"
+
+npm run dev
+
+создаем webpack.config.js в корне проекта
+...
+
+npm i
+
+
+
