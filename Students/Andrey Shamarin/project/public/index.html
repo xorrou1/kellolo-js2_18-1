@@ -19,7 +19,7 @@
                     </button>
                 </form>
                 <button class="btn-basket" @click="basket = !basket">Корзина</button> <!--при клике на кноку, свойство баскет поменяется на противоположное-->
-                <div class="basket-block" v-if="basket"> <!--отображает содержимое дива при истинном значении свойства баскет-->
+                <div class="basket-block" v-show="basket"> <!--отображает содержимое дива при истинном значении свойства баскет-->
                     <div class="basket-items">
                         <!--Basket elems-->
                         <div class="basket-item" v-for="item of basketItems">
