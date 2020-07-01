@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="normalize.css">
+    <title>Project Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">GeekShop</div>
+            <div class="basket">
+                <form action="#" class="search-form">
+                    <input type="text" class="search-field">
+                    <button class="btn-search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <button @click="showBasket = !showBasket" class="btn-basket">Корзина</button>
+                <div class="basket-block" v-show="showBasket">
+                    <div class="basket-items">
+                        <!--Basket elems-->
+
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <!--<div class="catalog-items">-->
+            <!--Catalog elems-->
+            <div class="catalog-item" v-for="item of items">
+                <img :src="item.img" :alt="item.product_name">
+                <div class="desc">
+                    <h3>{{item.product_name}}</h3>
+                    <p>{{item.price}} $ per hour</p>
+
+                    <!--НЕ РАБОТАЕТ ВЫДАЕТ 
+                   [Vue warn]: Error in v-on handler: "ReferenceError: createItem is not defined" -->
+
+                    <button class="buy-btn" name="buy" :id="item.id_product" @click="add (item)">TAKE</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"
+        integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous">
+    </script>
+    <!--<script src="../src/components/main.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        let app = new Vue({
+
+            el: '#app',
+
+            data: {
+                showBasket: false,
+                items: []
+            },
+
+            methods: {
+
+            // НЕ РАБОТАЕТ
+
+                add(item) {
+                    let find = this.items.find(el => el.id_product == item.id);
+
+                    if (!find) {
+                        this.items.push(Object.assign({}, createItem(+item.id - 1), {
+                            amount: 1
+                        }));
+                    } else {
+                        find.amount++;
+                    }
+                    this._render();
+                }
+            },
+
+            mounted() {
+                fetch('https://raw.githubusercontent.com/Sergey-TR/testrepo/master/dataCatalog.json')
+                    .then(d => d.json())
+                    .then(dataCatalog => {
+                        this.items = dataCatalog
+                    })
+                    .finally(() => {
+                        console.log(this.items)
+                    })
+            }
+        });
+    </script>
+
+</body>
+
+</html>
