@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<style>
+
+		.form-fialds{
+			display: flex;
+			flex-direction: column;
+    		align-items: self-end;
+		}
+
+		.input-fields{
+			padding: 5px 10px;
+			margin: 10px 5px;
+		}
+
+		.btn{
+			margin: 5px;
+		}
+
+		.par-fields-text{
+			height: 20px;
+			width: 50px;
+		}
+	</style>
+
+</head>
+<body>
+	  
+	<form class="form-fialds" action="">
+		<input id="textInp"   class="input-fields input-fields-text" placeholder="В ведите Ф.И.О. "  type="text" autofocus tabindex="1" >
+		<p class="par-fields-text input-fields"></p>
+		<input id="phone" class="input-fields input-fields-tel" placeholder="+7(000)000-0000" type="tel"  tabindex="3" >
+		<input id="email" class="input-fields input-fields-em" placeholder="В ведите email" type="email" tabindex="2" >
+		<input id="pass" class="input-fields input-fields-pass" placeholder="В ведите пороль" type="password" tabindex="4" >
+		<textarea class="input-fields" name="textarea" id="textarea" cols="30" rows="10" placeholder="В ведите текст..." ></textarea>
+
+		<button class="btn" onclick="testInfo(document.getElementById('textInp'))" >Потверждение</button>
+	</form>
+
+	<script>
+
+		let btn = document.querySelector('.btn');
+		let form = document.querySelector('form');
+		let input = document.querySelectorAll('.input-fields');
+		console.log(btn,form,input);
+		let reagexText = /(\w[A-Za-z]+)/g;
+		let reagexTel = /^(\+[7]|[8])[\(\s\-]*\d{3}[\)\s\-]*\d{3}[\s\-]*\d{4}/;
+		let reagexEmail = /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/;
+		let reagexPass = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15})/;
+
+/* 		
+			btn.addEventListener('click', input =>{
+					input.forEach((event) =>{
+						console.log(event);
+					});
+			}); */
+		
+		function testInfo(phoneInput){
+			var OK = reagexText.exec(phoneInput.value);  
+        if (!OK)  
+          window.alert(RegExp.input + " Нужно ввестиномер пороль латинскими буквами\n"+ "От 8 до 15 символов с минимум одной цифрой, одной заглавной и одной строчной буквой");  
+        else
+			document.querySelector('.par-fields-text').textContent = `${OK}`;
+          //window.alert("Thanks, your phone number is " + OK);  
+		}
+
+
+	</script>
+
+</body>
+</html>
