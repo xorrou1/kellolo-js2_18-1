@@ -1,21 +1,25 @@
 <template>
   <div>
     <header>
-        <div class="logo">GeekShop</div>
+        <div class="logo">GeekSho
+            <span class="logo-p">p</span>
+        </div>
         <div class="basket">
             <form action="#" class="search-form">
-                <input type="text" class="search-field">
+                <input type="text" placeholder="Search for item..." class="search-field">
                 <button class="btn-search">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
             <button class="btn-basket">Корзина</button>
-            <basket ref="kolya" />
+            <basket ref="basket" />
             
         </div>
     </header>
     <main>
-        <catalog />
+        <div class="center">
+            <catalog @add="addItem"/>
+        </div>
     </main>
   </div>
 </template>
@@ -42,6 +46,9 @@ export default {
         //пробрасываемые извне данные, которые не изменяются внутри компонента
     },
     methods: {
+        addItem(item) {
+            this.$refs.basket.add(item);
+        },
         get(url) {
             return fetch(url).then(data => data.json());
         }
