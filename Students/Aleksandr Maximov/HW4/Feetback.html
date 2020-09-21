@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма обратной связи</title>
+    <link rel="stylesheet" href="css/Style.css">
+    <script src="js/Form.js" async></script>
+</head>
+<body>
+<div class="form">
+    <label id="name">
+        <input type="text" name="name" placeholder="Введите имя">
+        <small class="error">Поле ИМЯ может содержать только буквы</small>
+    </label>
+    <label id="telephone">
+        <input type="tel" name="phone" placeholder="+7(000)000-00-00">
+        <small class="error">Телефон введите в формате +7(000)000-0000</small>
+    </label>
+    <label id="email">
+        <input type="email" name="email" placeholder="mymail@mail.ru">
+        <small class="error">Адрес эл. почты может содежрать латинские буквы (@, . - _)</small>
+    </label>
+    <label id="message">
+        <textarea placeholder="Введите сообщение" name="message"></textarea>
+    </label>
+    <button class="button">Отправить</button>
+</div>
+</body>
+</html>

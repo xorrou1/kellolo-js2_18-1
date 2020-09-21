@@ -1,146 +1,50 @@
-class List {  // для контейнеров (умные, логика)
-    constructor(url, container, basket) {
-        this.url = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses' + url;
-        this.container = container;
-        this.item = [];
-        this._init(basket);
-    }
-
-    _init(basket = false) {
-        this._get(this.url)
-            .then(data => {
-                // this.items = data.length ? data : data.contents; // проверка что пришло, массив или объект (если есть длина, то массив)
-                this.items = !basket ? data : data.contents; // проверка что пришло, корзина или каталог (если не козина, то используем data), это чтоб взять ИМЕННО массив
-                this._render();
-                this._handleEvents();
-            })
-    }
-
-    _get(url) {
-        return fetch(url).then(data => data.json()); // замена кучи строк у промиса
-    }
-
-    _render() {
-        let htmlStr = '';
-        this.items.forEach(item => {
-            htmlStr += new connect[this.constructor.name](item).render()  // если в this.constructor.name будет Catalog то вместо connect[this.constructor.name] будет CatalogItem и также с Basket
-        })
-        document.querySelector(this.container).innerHTML = htmlStr;
-    }
-
-    _handleEvents() {
-        return ''
-    }
-}
-
-class Item { // для компонентов (глупые, верстка)
-    constructor(item) {
-        this.item = item;
-    }
-
-    render() {
-        return `<div class="catalog-item">
-                    <img src="http://placehold.it/300x200" alt="${this.item.product_name}">
-                    <div class="desc">
-                        <h3>${this.item.product_name} test</h3>
-                        <p>${this.item.price} $</p>
-                        <button 
-                            class="buy-btn" 
-                            name="buy"
-                            data-name="${this.item.product_name}"
-                            data-price="${this.item.price}"
-                            data-id="${this.item.id_product}"
-                        >Buy</button>
-                    </div>
-                </div>`
-    }
-}
-
-class Catalog extends List {
-    constructor (basket, url = '/catalogData.json', container = '.catalog-items') {
-        super(url, container);
-        this.basket = basket;
-    }
-
-    _handleEvents() {
-        document.querySelector(this.container).addEventListener('click', evt => {
-            if (evt.target.name == 'buy') {
-                this.basket.add(evt.target.dataset) }
-        })
-    }
-}
-
-class Basket extends List {
-    constructor (url = '/getBasket.json', container = '.basket-items', basket = true) {
-        super(url, container, basket);
-    }
-
-    _handleEvents() {
-        document.querySelector(this.container).addEventListener('click', evt => {
-            if (evt.target.name == 'remove') {
-                this.remove(evt.target.dataset.id) }
-        });
-        document.querySelector('.btn-basket').addEventListener('click', evt => {
-            document.querySelector('.basket-block').classList.toggle('invisible');
-        });
-    }
-
-    add(item) {
-        let find = this.items.find(el => el.id_product == item.id); // либо ссылка на объект с товаром, либо false если ничего не найдет
-        if (find) {
-            find.quantity++;
-            this._render();
-        } else {
-            let itemNew = { id_product: item.id, 
-                            product_name: item.name, 
-                            price: +item.price, 
-                            quantity: 1 
-                            }
-            this.items.push(itemNew);
-            this._render();
-        }
-    }
-
-    remove(itemId) {
-        let find = this.items.find(el => el.id_product == itemId);
-        if (find.quantity != 1) {
-            find.quantity--;
-        } else {
-            this.items.splice(this.items.indexOf(find), 1);  
-        }
-        this._render();
-    }
-}
-
-class CatalogItem extends Item {}  // класс поумолчанию, весь описан в классе Item
-
-class BasketItem extends Item {
-    constructor(item) {
-        super(item)
-    }
-
-    render() {
-        return `<div class="basket-item">
-                    <img src="http://placehold.it/100x80" alt="${this.item.product_name}">
-                    <div class="product-desc">
-                        <p class="product-title">${this.item.product_name}</p>
-                        <p class="product-amount">${this.item.quantity}</p>
-                        <p class="product-single-price">${this.item.price}</p>
-                    </div>
-                    <div class="right-block">
-                        <p class="product-price">${this.item.price * this.item.quantity}</p>
-                        <button class="del-btn" name="remove" data-id="${this.item.id_product}">&times;</button>
-                    </div>
-                </div>`
-    }
-}
-
-let connect = {   // словарь{ Название поля: Класс, }
-    Catalog: CatalogItem,
-    Basket: BasketItem
-}
-
-export default () => {
-    let basket = new Basket();
-    let catalog = new Catalog(basket);
-}
+// export default function(){ 
+//     let app = new Vue({
+//         el: '#app', 
+//         data: {
+//             basketItems: [], // массив для корзины
+//             catalogItems: [], // массив для каталога
+//             catalogUrl: 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json',
+//             showBasket: false,
+//             basketUrl: 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getBasket.json'
+//         },
+//         methods: {
+//             _get(url) {
+//                 return fetch(url).then(d => d.json());
+//             },
+    
+//             add(item) {
+//                 let find = this.basketItems.find(el => el.id_product == item.id_product); // либо ссылка на объект с товаром, либо false если ничего не найдет
+//                 if (find) {
+//                     find.quantity++;
+//                 } else {
+//                     let itemNew = {
+//                         id_product: item.id_product,
+//                         product_name: item.product_name,
+//                         price: +item.price,
+//                         quantity: 1
+//                     }
+//                     this.basketItems.push(itemNew);
+//                 }
+//             },
+    
+//             remove(item) {
+//                 if (item.quantity != 1) {
+//                     item.quantity--;
+//                 } else {
+//                     this.basketItems.splice(this.basketItems.indexOf(item), 1);
+//                 }
+//             }
+//         },
+//         async mounted() {
+//             try {
+//                 this.catalogItems = await this._get(this.catalogUrl);
+//                 this.basketItems = await this._get(this.basketUrl);
+//                 this.basketItems = this.basketItems.contents;
+//             }
+//             finally {
+//                 console.log('data loaded');
+//             }
+//         }
+//     })
+// }

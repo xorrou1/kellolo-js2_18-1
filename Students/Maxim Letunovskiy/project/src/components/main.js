@@ -1,6 +1,9 @@
+//https://raw.githubusercontent.com/gavrilovem/catalogData/master/catalogData.json
+//https://raw.githubusercontent.com/gavrilovem/catalogData/master/getBasket.json
+
 class List {
     constructor(url, container, basket) {
-        this.url = 'https://raw.githubusercontent.com/maximle/online-store-api/master/responses' + url;
+        this.url = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses' + url;
         this.container = container;
         this.items = [];
         this._init(basket);
@@ -59,7 +62,7 @@ class Item {
 }
 
 class Catalog extends List {
-    constructor(basket, url = '/catalogData2.json', container = '.catalog-items') {
+    constructor(basket, url = '/catalogData.json', container = '.catalog-items') {
         super(url, container);
         this.basket = basket;
     }
@@ -83,9 +86,9 @@ class Basket extends List {
             }
         });
 
-        // document.querySelector('.btn-basket').addEventListener('click', evt => {
-        //     document.querySelector('.basket-block').classList.toggle('invisible');
-        // });
+        document.querySelector('.btn-basket').addEventListener('click', evt => {
+            document.querySelector('.basket-block').classList.toggle('invisible');
+        });
     }
 
     add(item) {
@@ -102,13 +105,7 @@ class Basket extends List {
 
     remove(itemId) {
         let find = this.items.find(el => el.id_product == itemId);
-        console.log('попытка удалить ' + itemId);
-        if (find.quantity == 1) {
-            this.items.splice(this.items.indexOf(find), 1);
-        } else {
-            find.quantity--;
-        }
-        this._render();
+        console.log('попытка удалить ' + itemId)
     }
 }
 
@@ -135,28 +132,6 @@ class BasketItem extends Item {
     }
 }
 
-let app = new Vue({
-    el: '#app',
-    data: {
-        searchValue: '',
-        isInvisible: true
-    },
-    methods: {
-        filterGoods() {
-            alert('items filtered');
-        },
-        toggleBasket() {
-            this.isInvisible ? this.isInvisible = false : this.isInvisible = true;
-        }
-    },
-    computed: {
-        
-        testComp() {
-            return this.searchValue ? this.searchValue : 'test';
-        },
-        
-    },
-});
 
 let connect = {
     'Catalog': CatalogItem,
